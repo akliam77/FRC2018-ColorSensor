@@ -1,34 +1,32 @@
-#This is the Python program to detect color during the FRC 2018 competition using the Adafruit TCS 34725 color sensor and the raspberry pi 3
-#import necessary dependencies
+"""
+File Name: ColorSensor.py
+Author: Akli Amrous
+Description: This program uses the Adafruit TCS34725 color sensor to
+gather color and illuminance data. This program created for the 2018
+FIRST Robotics Competition. It was scraped due to my imcompetency as
+as programmer
+
+"""
+
 from networktables import NetworkTables as nt
 import time
 import smbus
 import Adafruit_TCS34725 as af
 import os
 
-#Define the Global Variables:
-#IP address and SD tables
-#Initialize the Server as well.
-'''-----------------------------------------------------------------------'''
+
 class Sensor(object):
-    def __init__(self, ip, switch, scale):
+    def __init__(self, ip):
         
-        self.ip = "XX.XX.XX.X"
-        
+        self.ip = ip
         self.scale = nt.getTable('Scale')
         self.switch = nt.getTable('Switch')
-'''------------------------------------------------------------------------'''
-#Create an instance of the Color Sensor
         self.sensor = af.TCS34725()
+        self.sensor.set_interrupt(False)
 
-        #sensor.set_interrupt(False)
-
-#Detect Color and Calculate Lumosity in infinite loop
-'''------------------------------------------------------------------'''
-
-    def scan():
+    def scan(self):
         
-        while(1):
+        while(True):
     
             r, g, b, c = self.sensor.get_raw_data()
             time.sleep(0.5)
@@ -36,21 +34,24 @@ class Sensor(object):
     
             colorTemp = af.calculate_color_temperature(r, g,b)
             lux = af.calculate_lux(r,g,b)
-        print(str(colorTemp) + "k")
-        print(str(lux) + " lux")
-        if lux <= 9:
-            self.scale.putNumber('View', 0)
-            print("Lumosity is %s, Robot is not in the Scale Area" % (str(lux)))
-        elif lux =< 10:
-            self.scale.putNumber('View', 1)
-            print("Lumosity is %s, Robot is in the Scale Area" % ((str(lux)))
-'''---------------------------------------------------------------------'''
-              
-              
-'''-----------------------------------------------------------------------'''
-              #Enter sleep mode for Sensor
-        sensor.set_interrupt(True)
-        sensor.disable()
+            print(str(colorTemp) + "k")
+            print(str(lux) + " lux")
+
+            if(lux <= 9):
+                self.scale.putNumber('View', 0)
+                print("Lumosity is %s, Robot is not in the Scale Area" % (str(lux)))
+
+            elif(lux <= 10):
+                self.scale.putNumber('View', 1)
+                print("Lumosity is %s, Robot is in the Scale Area" % ((str(lux)))
+
+        self.sensor.set_interrupt(True)
+        self.sensor.disable()
+
+        
+
+
+
 
 
 

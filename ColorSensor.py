@@ -3,9 +3,7 @@ File Name: ColorSensor.py
 Author: Akli Amrous
 Description: This program uses the Adafruit TCS34725 color sensor to
 gather color and illuminance data. This program created for the 2018
-FIRST Robotics Competition. It was scraped due to my imcompetency as
-as programmer
-
+FIRST Robotics Competition. 
 """
 
 from networktables import NetworkTables as nt
